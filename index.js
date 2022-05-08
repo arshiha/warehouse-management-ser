@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 // const jwt = require("jsonwebtoken");
 const app = express();
@@ -31,10 +31,16 @@ async function footRun() {
       const services = await cursor.toArray();
       res.send(services);
     });
+    app.get("/fruit/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await fruitCollection.findOne(query);
+      res.send(result);
+    });
   } finally {
   }
 }
-footRun().catch(console.di);
+footRun().catch(console.dir);
 
 app.get("/", (req, res) => {
   res.send("hello");
